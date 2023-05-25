@@ -1,2 +1,8 @@
 # 636_FinalProject
-636 Web App
+
+# NZ Winter Olympics Project Report
+## Assumptions
+## Routes and Functions
+## Changes
+### Database Changes
+### App Changes
