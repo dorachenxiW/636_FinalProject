@@ -43,11 +43,30 @@ def listmembers():
     # print(memberList)
     return render_template("memberlist.html", memberlist = memberList)    
 
-
 @app.route("/listevents")
 def listevents():
     connection = getCursor()
     connection.execute("SELECT * FROM events;")
     eventList = connection.fetchall()
     return render_template("eventlist.html", eventlist = eventList)
+
+@app.route("/search")
+def search():
+    return render_template("search.html")
+
+@app.route("/addmembers")
+def addmembers():
+    return render_template("addmembers.html")
+
+@app.route("/addevents")
+def addevents():
+    return render_template("addevents.html")
+
+@app.route("/addscores")
+def addscores():
+    return render_template("addscores.html")
+
+@app.route("/reports")
+def reports():
+    return render_template("reports.html")
 
