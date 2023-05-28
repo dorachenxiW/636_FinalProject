@@ -27,10 +27,18 @@ def getCursor():
 def home():
     return render_template("base.html")
 
+@app.route("/admin")
+def admin():
+    return render_template("adminbase.html")
+
 @app.route("/listmembers")
 def listmembers():
     connection = getCursor()
-    connection.execute("SELECT * FROM members;")
+    sql = "SELECT members.MemberID, teams.TeamName, members.FirstName, members.LastName, members.City, members.Birthdate\
+          FROM members\
+          INNER JOIN teams\
+          ON members.TeamID = teams.TeamID;"
+    connection.execute(sql)
     memberList = connection.fetchall()
     # print(memberList)
     return render_template("memberlist.html", memberlist = memberList)    
