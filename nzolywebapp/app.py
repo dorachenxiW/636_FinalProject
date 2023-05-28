@@ -30,11 +30,7 @@ def home():
 @app.route("/listmembers")
 def listmembers():
     connection = getCursor()
-    sql = "SELECT members.MemberID AS 'Member ID', teams.TeamName AS 'Team Name', members.FirstName AS 'First Name', members.LastName AS 'Last Name', members.City, members.Birthdate \
-          FROM members \
-          INNER JOIN teams \
-          ON members.TeamID = teams.TeamID;"
-    connection.execute(sql)
+    connection.execute("SELECT * FROM members;")
     memberList = connection.fetchall()
     # print(memberList)
     return render_template("memberlist.html", memberlist = memberList)    
