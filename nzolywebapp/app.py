@@ -45,10 +45,14 @@ def listmembers():
 
 @app.route("/listmembers/athlete/<name>", methods=["GET"])
 def athlete(name):
-    connection=getCursor
+    connection=getCursor()
     print(name)
-    #cur.execute()
-    return render_template("athlete.html", name=name)
+    sql_previous = "SELECT event_stage.StageDate, event_stage.StageName, event_stage.Location, event_stage.Qualifying, event_stage_results.Position\
+          FROM event_stage inner join event_stage_results ON event_stage.StageID = event_stage_results.StageID\
+            WHERE name = s%, (name,);"
+    connection.execute(sql_previous)
+    previousevents = connection.fetchall()
+    return render_template("athlete.html", name=name, previousevents=previousevents)
 
 @app.route("/listevents")
 def listevents():

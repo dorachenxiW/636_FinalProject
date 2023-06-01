@@ -5,13 +5,12 @@
 <h3>A list of all NZ Olympic Team members</h3>
 
 <table>
-    <tr><th>First Name</th><th>First Name</th><th>Last Name</th><th>Member ID</th><th>Team Name</th><th>City</th><th>Birthday</th></tr>
+    <tr><th>Name</th><th>Member ID</th><th>Team Name</th><th>City</th><th>Birthday</th></tr>
     {% for member in memberlist %}
+    {% set name = member[0]|string + " " + member[1]|string %}
         <tr>
-            <td><a href="/listmembers/athlete/{{member[0]}}">{{member[0]}} </a></td>
-            {% for entry in member %}
-                <td>{{entry}}</td>
-            {% endfor %}
+            <td><a href="/listmembers/athlete/{{member[0]}}">{{name}} </a></td>
+            <td>{{member[2]}}</td><td>{{member[3]}}</td><td>{{member[4]}}</td><td>{{member[5]}}</td>
         </tr>
     {% endfor %}
 </table>

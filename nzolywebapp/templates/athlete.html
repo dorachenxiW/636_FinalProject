@@ -5,4 +5,15 @@
 
 <h2>Previous Results</h2>
 
+<table>
+    {% for result in previousevents %}
+        <tr>
+            {% for entry in result %}
+                <td>{{entry}}</td>
+            {% endfor %}
+        </tr>
+    {% endfor %}
+</table>
+
+
 {% endblock %}
