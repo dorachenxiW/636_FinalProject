@@ -34,14 +34,22 @@ def admin():
 @app.route("/listmembers")
 def listmembers():
     connection = getCursor()
-    sql = "SELECT members.MemberID, teams.TeamName, members.FirstName, members.LastName, members.City, members.Birthdate\
+    sql = "SELECT members.FirstName, members.LastName, members.MemberID, teams.TeamName, members.City, members.Birthdate\
           FROM members\
           INNER JOIN teams\
           ON members.TeamID = teams.TeamID;"
     connection.execute(sql)
     memberList = connection.fetchall()
-    # print(memberList)
+    print(memberList)
+
     return render_template("memberlist.html", memberlist = memberList)    
+
+@app.route("/listmembers/athlete/<name>", methods=["GET"])
+def athlete(name):
+    cur=getCursor
+    print(name)
+    #cur.execute()
+    return render_template("athlete.html", name=name)
 
 @app.route("/listevents")
 def listevents():
