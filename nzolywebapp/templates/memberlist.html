@@ -8,7 +8,7 @@
     <tr><th>First Name</th><th>First Name</th><th>Last Name</th><th>Member ID</th><th>Team Name</th><th>City</th><th>Birthday</th></tr>
     {% for member in memberlist %}
         <tr>
-            <td><a href="/listmembers/athlete/{{member[0]}}">{{member[0]}}</a></td>
+            <td><a href="/listmembers/athlete/{{member[0]}}">{{member[0]}} </a></td>
             {% for entry in member %}
                 <td>{{entry}}</td>
             {% endfor %}
