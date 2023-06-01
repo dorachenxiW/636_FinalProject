@@ -40,13 +40,12 @@ def listmembers():
           ON members.TeamID = teams.TeamID;"
     connection.execute(sql)
     memberList = connection.fetchall()
-    print(memberList)
-
+    #print(memberList)
     return render_template("memberlist.html", memberlist = memberList)    
 
 @app.route("/listmembers/athlete/<name>", methods=["GET"])
 def athlete(name):
-    cur=getCursor
+    connection=getCursor
     print(name)
     #cur.execute()
     return render_template("athlete.html", name=name)
