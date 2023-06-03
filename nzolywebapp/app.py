@@ -47,12 +47,16 @@ def listmembers():
 def athlete(name):
     connection=getCursor()
     print(name)
-    sql_previous = "SELECT event_stage.StageDate, event_stage.StageName, event_stage.Location, event_stage.Qualifying, event_stage_results.Position\
-          FROM event_stage inner join event_stage_results ON event_stage.StageID = event_stage_results.StageID\
-            WHERE name = s%, (name,);"
-    connection.execute(sql_previous)
-    previousevents = connection.fetchall()
-    return render_template("athlete.html", name=name, previousevents=previousevents)
+    #likeathletename=f'%{athletename}%'
+    #connection.execute("SELECT m.MemberID, m.FirstName, m.LastName, esr.StageID, es.EventID, e.EventName FROM members as m JOIN event_stage_results as esr\
+    #                ON m.MemberID = esr.MemberID JOIN event_stage as es ON esr.StageID = es.StageID JOIN events as e ON es.EventID = e.EventID\
+    #               WHERE m.FirstName = %s;", (name),)
+    #sql_previous = "SELECT event_stage.StageDate, event_stage.StageName, event_stage.Location, event_stage.Qualifying, event_stage_results.Position\
+    #      FROM event_stage inner join event_stage_results ON event_stage.StageID = event_stage_results.StageID;"
+    #connection.execute(sql_eventName)
+    #eventName = connection.fetchall()
+    #print(eventName)
+    return render_template("athlete.html", name=name)
 
 @app.route("/listevents")
 def listevents():
@@ -60,6 +64,28 @@ def listevents():
     connection.execute("SELECT * FROM events;")
     eventList = connection.fetchall()
     return render_template("eventlist.html", eventlist = eventList)
+
+@app.route("/search/result_member", methods=["POST"])
+def searchresult_member():
+    searchterm = request.form.get('membersearch')
+    #sprint(searchterm)
+    likesearchterm = f'%{searchterm}%'
+    connection = getCursor()
+    connection.execute("SELECT members.FirstName, members.LastName, members.MemberID, teams.TeamName, members.City, members.Birthdate\
+          FROM members INNER JOIN teams ON members.TeamID = teams.TeamID WHERE members.FirstName LIKE %s;", (likesearchterm,))
+    memberList = connection.fetchall()
+    #print(memberList)
+    return render_template("search.html", memberlist = memberList) 
+
+@app.route("/search/result_event", methods=["POST"])
+def searchresult_event():
+    searchterm = request.form.get('eventsearch')
+    print(searchterm)
+    likesearchterm = f'%{searchterm}%'
+    connection = getCursor()
+    connection.execute("SELECT * FROM events WHERE EventName LIKE %s;", (likesearchterm,))
+    eventList = connection.fetchall()
+    return render_template("search.html", eventlist=eventList) 
 
 @app.route("/search")
 def search():
