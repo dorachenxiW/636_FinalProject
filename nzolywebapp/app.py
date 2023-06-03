@@ -43,10 +43,10 @@ def listmembers():
     #print(memberList)
     return render_template("memberlist.html", memberlist = memberList)    
 
-@app.route("/listmembers/athlete/<name>", methods=["GET"])
-def athlete(name):
-    connection=getCursor()
-    print(name)
+#@app.route("/listmembers/athlete/<name>", methods=["GET"])
+#def athlete(name):
+#    connection=getCursor()
+#    print(name)
     #likeathletename=f'%{athletename}%'
     #connection.execute("SELECT m.MemberID, m.FirstName, m.LastName, esr.StageID, es.EventID, e.EventName FROM members as m JOIN event_stage_results as esr\
     #                ON m.MemberID = esr.MemberID JOIN event_stage as es ON esr.StageID = es.StageID JOIN events as e ON es.EventID = e.EventID\
@@ -56,7 +56,21 @@ def athlete(name):
     #connection.execute(sql_eventName)
     #eventName = connection.fetchall()
     #print(eventName)
-    return render_template("athlete.html", name=name)
+    #return render_template("athlete.html", name=name)
+
+@app.route("/listmembers/athlete/detail", methods=['GET', 'POST'])
+def athlete_detail():
+    memberid = request.form.get('id')
+    #memberid = int(memberID)
+    #print(memberid)
+    connection = getCursor()
+    sql="""SELECT * FROM events JOIN event_stage on events.EventID=event_stage.EventID 
+            JOIN event_stage_results on event_stage.StageID=event_stage_results.StageID
+            JOIN members on event_stage_results.MemberID=members.MemberID WHERE members.MemberID=%s;"""
+    connection.execute(sql, (memberid,))
+    eventName = connection.fetchall()
+    print(eventName)
+    return render_template("athlete.html", eventname=eventName)
 
 @app.route("/listevents")
 def listevents():

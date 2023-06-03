@@ -1,9 +1,18 @@
 {% extends "base.html" %}
 {% block content %}
-<h1>{{name}} </h1>
+<h1>{{eventname[18]}} </h1>
 <h2>Upcoming Event and Stages</h2>
 
 <h2>Previous Results</h2>
-{{eventname}}
+<table class="table table-striped table-hover">
+    <tr><th>Member ID</th><th>First Name</th><th>Last Name</th><th>Stage ID</th><th>Event ID</th><th>Event Name</th></tr>
+{% for event in eventname %}
+<tr>
+    {% for entry in event %}
+        <td>{{entry}}</td>
+    {% endfor %}
+</tr>
+{% endfor %}
+</table>
 
 {% endblock %}
