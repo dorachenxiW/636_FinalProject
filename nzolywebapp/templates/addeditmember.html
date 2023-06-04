@@ -1,0 +1,38 @@
+{% extends "adminbase.html" %}
+{% block content %}
+<!--this is how to comment-->
+<h2>Add/Edit Member</h2>
+
+<h3>Add a New Member</h3>
+
+<p>Please fill the form then press the add button</p>
+
+<form action="/member/add" method="Post">
+    
+   New Member: <input type="text" name="FirstName" placeholder="First Name"/>
+               <input type="text" name="LastName" placeholder="Last Name"/>
+               <input type="text" name="MemberID" placeholder="Member ID(****)"/>
+               <input type="text" name="TeamID" placeholder="Team ID(***)"/>
+               <input type="text" name="City" placeholder="City"/>
+               <input type="text" name="Birthdate" placeholder="Birthday(yyyy-mm-dd)"/>
+    <button type ="submit">Add</button>
+</form>
+
+<h3>Edit a Exsiting Member</h3>
+
+<p>Please choose a member from the list to edit</p>
+
+<form action="/member/edit" method="POST">
+    <input type="hidden", value={{memberid}}, name="MemberID"/>
+    <select name="member">
+        {% for member in memberlist %}
+            <option value="{{member[2]}}"> {{member[0]+" "+member[1]}}</option>
+        {% endfor %}    
+    </select>    
+    <input type="submit"/>
+</form>
+
+
+
+
+{% endblock %}

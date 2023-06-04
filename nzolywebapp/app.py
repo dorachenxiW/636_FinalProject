@@ -43,34 +43,20 @@ def listmembers():
     #print(memberList)
     return render_template("memberlist.html", memberlist = memberList)    
 
-#@app.route("/listmembers/athlete/<name>", methods=["GET"])
-#def athlete(name):
-#    connection=getCursor()
-#    print(name)
-    #likeathletename=f'%{athletename}%'
-    #connection.execute("SELECT m.MemberID, m.FirstName, m.LastName, esr.StageID, es.EventID, e.EventName FROM members as m JOIN event_stage_results as esr\
-    #                ON m.MemberID = esr.MemberID JOIN event_stage as es ON esr.StageID = es.StageID JOIN events as e ON es.EventID = e.EventID\
-    #               WHERE m.FirstName = %s;", (name),)
-    #sql_previous = "SELECT event_stage.StageDate, event_stage.StageName, event_stage.Location, event_stage.Qualifying, event_stage_results.Position\
-    #      FROM event_stage inner join event_stage_results ON event_stage.StageID = event_stage_results.StageID;"
-    #connection.execute(sql_eventName)
-    #eventName = connection.fetchall()
-    #print(eventName)
-    #return render_template("athlete.html", name=name)
-
 @app.route("/listmembers/athlete/detail", methods=['GET', 'POST'])
 def athlete_detail():
     memberid = request.form.get('id')
     #memberid = int(memberID)
     #print(memberid)
     connection = getCursor()
-    sql="""SELECT * FROM events JOIN event_stage on events.EventID=event_stage.EventID 
+    sql="""SELECT members.FirstName, members.LastName, members.MemberID, events.EventName, event_stage.StageDate, event_stage.StageName, event_stage.Location, event_stage.Qualifying, event_stage_results.Position
+            FROM events JOIN event_stage on events.EventID=event_stage.EventID 
             JOIN event_stage_results on event_stage.StageID=event_stage_results.StageID
             JOIN members on event_stage_results.MemberID=members.MemberID WHERE members.MemberID=%s;"""
     connection.execute(sql, (memberid,))
-    eventName = connection.fetchall()
-    print(eventName)
-    return render_template("athlete.html", eventname=eventName)
+    Details = connection.fetchall()
+    #print(Details)
+    return render_template("athlete.html", details=Details)
 
 @app.route("/listevents")
 def listevents():
@@ -78,6 +64,10 @@ def listevents():
     connection.execute("SELECT * FROM events;")
     eventList = connection.fetchall()
     return render_template("eventlist.html", eventlist = eventList)
+
+@app.route("/search")
+def search():
+    return render_template("search.html")
 
 @app.route("/search/result_member", methods=["POST"])
 def searchresult_member():
@@ -94,20 +84,36 @@ def searchresult_member():
 @app.route("/search/result_event", methods=["POST"])
 def searchresult_event():
     searchterm = request.form.get('eventsearch')
-    print(searchterm)
+    #print(searchterm)
     likesearchterm = f'%{searchterm}%'
     connection = getCursor()
     connection.execute("SELECT * FROM events WHERE EventName LIKE %s;", (likesearchterm,))
     eventList = connection.fetchall()
     return render_template("search.html", eventlist=eventList) 
 
-@app.route("/search")
-def search():
-    return render_template("search.html")
+@app.route("/addeditmember")
+def addeditmember():
+    return render_template("addeditmember.html")
 
-@app.route("/addmembers")
+@app.route("/member/add", methods=["POST"])
 def addmembers():
-    return render_template("addmembers.html")
+    firstname=request.form.get('FirstName')
+    lastname=request.form.get('LastName')
+    memberid=request.form.get('MemberID')
+    teamid=request.form.get('TeamID')
+    city=request.form.get('City')
+    birthdate=request.form.get('Birthdate')
+
+    connection = getCursor()
+    connection.execute("INSERT INTO members (FirstName, LastName, MemberID, TeamID, City, Birthdate) VALUES (%s, %s, %s, %s, %s, %s);", (firstname, lastname, memberid, teamid, city, str(birthdate),))
+    
+    return redirect ("/listmembers")
+
+@app.route("/member/edit", methods=["POST"])
+def editmembers():
+    memberid=request.form.get('MemberID')
+    connect=getCursor()
+    
 
 @app.route("/addevents")
 def addevents():

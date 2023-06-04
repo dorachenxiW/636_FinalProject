@@ -1,18 +1,22 @@
 {% extends "base.html" %}
 {% block content %}
-<h1>{{eventname[18]}} </h1>
-<h2>Upcoming Event and Stages</h2>
 
-<h2>Previous Results</h2>
-<table class="table table-striped table-hover">
-    <tr><th>Member ID</th><th>First Name</th><th>Last Name</th><th>Stage ID</th><th>Event ID</th><th>Event Name</th></tr>
-{% for event in eventname %}
-<tr>
-    {% for entry in event %}
-        <td>{{entry}}</td>
-    {% endfor %}
-</tr>
-{% endfor %}
-</table>
+
+{{details}}
+
+<h1 aligh="left"> {{details[0][0]+' '+details[0][1]}} </h1>
+<h2 aligh="left">Upcoming Event and Stages</h2>
+
+<h2 aligh="left">Previous Results</h2>
+
+{% for row in details %}
+<p>{{row[3]}}</p>
+    <table>
+        <tr>
+           <td>{{row[4]}}</td><td>{{row[5]}}</td><td>{{row[6]}}</td><td>{{row[7]}}</td>
+        </tr>
+       
+    </table>
+{% endfor %}    
 
 {% endblock %}
