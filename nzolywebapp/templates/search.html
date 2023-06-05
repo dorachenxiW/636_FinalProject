@@ -2,7 +2,7 @@
 {% block content %}
 <!-- code in here to search->
 <!-- db is the variable passed in searching -->
-<h2>Search Members</h2>
+<h2 align="center">Search Members</h2>
 <h3>Search all of the Members</h3>
 
 <form action="/search/result_member" method="Post">
@@ -10,7 +10,7 @@
     <input type="submit" value="Search">
 </form>
 
-<table>
+<table class="table table-striped table-hover">
     <tr><th>Name</th><th>Member ID</th><th>Team Name</th><th>City</th><th>Birthday</th></tr>
     {% for member in memberlist %}
     {% set name = member[0]|string + " " + member[1]|string %}
@@ -20,14 +20,14 @@
     {% endfor %}  
 </table>
 
-<h2>Search Events</h2>
+<h2 align="center">Search Events</h2>
 <h3>Search all of the Events</h3>
 <form action="/search/result_event" method="Post">
     Search Event: <input type="text" name="eventsearch"/>
     <input type="submit" value="Search">
 </form>
 
-<table>
+<table class="table table-striped table-hover">
     <tr><th>Event ID</th><th>Event Name</th><th>Sport</th><th>NZ Team ID</th></tr>
     {% for event in eventlist %}
         <tr>
