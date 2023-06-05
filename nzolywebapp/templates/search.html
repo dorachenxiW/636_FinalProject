@@ -2,7 +2,7 @@
 {% block content %}
 <!-- code in here to search->
 <!-- db is the variable passed in searching -->
-<h2 align="center">Search Members</h2>
+<h2 align="center">Search Members and Events</h2>
 <h3>Search all of the Members</h3>
 
 <form action="/search/result_member" method="Post">
@@ -20,7 +20,6 @@
     {% endfor %}  
 </table>
 
-<h2 align="center">Search Events</h2>
 <h3>Search all of the Events</h3>
 <form action="/search/result_event" method="Post">
     Search Event: <input type="text" name="eventsearch"/>

@@ -1,0 +1,25 @@
+{% extends "adminbase.html" %}
+{% block content %}
+
+<h2 align="center">Add Events and Event Stages</h2>
+<h3>Current Stages for {{stagelist[0][1]}} (Event ID -- {{stagelist[0][0]}})</h3>
+<table class="table table-striped table-hover">
+    <tr><th>Stage ID</th><th>Stage Name</th><th>Location</th><th>Stage Date</th></tr>
+    {% for stage in stagelist %}
+    <tr><td>{{stage[4]}}</td><td>{{stage[5]}}</td><td>{{stage[7]}}</td><td>{{stage[8]}}</td>
+    </tr>
+    {% endfor %}
+</table>
+<h3>Adding a New Event Stage on {{stagelist[0][1]}} </h3>
+<form action="/eventstage/add" method="Post">
+    
+    New Event Stage:  
+    <input type="text" name="StageID" placeholder="Stage ID(***)"/>
+    <input type="text" name="StageName" placeholder="Stage Name"/>
+    <input type="text" name="Location" placeholder="Location"/>
+    <input type="text" name="StageDate" placeholder="Stage Date(yyyy-mm-dd)"/>
+     <button type ="submit">Add</button>
+ </form>
+
+
+{% endblock %}
