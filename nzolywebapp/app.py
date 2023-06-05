@@ -93,27 +93,50 @@ def searchresult_event():
 
 @app.route("/addeditmember")
 def addeditmember():
-    return render_template("addeditmember.html")
+    connection = getCursor()
+    sql = "SELECT * FROM members;"
+    connection.execute(sql)
+    memberList = connection.fetchall()
+    return render_template("addeditmember.html", memberlist=memberList)
 
 @app.route("/member/add", methods=["POST"])
 def addmembers():
-    firstname=request.form.get('FirstName')
-    lastname=request.form.get('LastName')
     memberid=request.form.get('MemberID')
     teamid=request.form.get('TeamID')
+    firstname=request.form.get('FirstName')
+    lastname=request.form.get('LastName')
     city=request.form.get('City')
     birthdate=request.form.get('Birthdate')
 
     connection = getCursor()
-    connection.execute("INSERT INTO members (FirstName, LastName, MemberID, TeamID, City, Birthdate) VALUES (%s, %s, %s, %s, %s, %s);", (firstname, lastname, memberid, teamid, city, str(birthdate),))
+    connection.execute("INSERT INTO members (MemberID, TeamID, FirstName, LastName, City, Birthdate) VALUES (%s, %s, %s, %s, %s, %s);", (memberid, teamid, firstname, lastname, city, str(birthdate),))
     
-    return redirect ("/listmembers")
+    return redirect ("/addeditmember")
 
-@app.route("/member/edit", methods=["POST"])
-def editmembers():
+@app.route("/member/edit/<memberid>")
+def editmember(memberid):
+    #print(memberid)
+    connection=getCursor()
+    sql = "SELECT * FROM members WHERE memberid=%s;"
+    connection.execute(sql, (memberid,))
+    memberEditting=connection.fetchone()
+    return render_template ("editmember.html", membereditting=memberEditting)
+
+@app.route("/updatemember",  methods=["POST"])
+def updatemember():
     memberid=request.form.get('MemberID')
-    connect=getCursor()
-    
+    teamid=request.form.get('TeamID')
+    firstname=request.form.get('FirstName')
+    lastname=request.form.get('LastName')
+    city=request.form.get('City')
+    birthdate=request.form.get('Birthdate')
+
+    connection = getCursor()
+    connection.execute("UPDATE members SET MemberID=%s, TeamID=%s, FirstName=%s, LastName=%s, City=%s, Birthdate=%s WHERE MemberID=%s;", (memberid, teamid, firstname, lastname, city, str(birthdate), memberid, ))
+
+    return redirect ("/addeditmember")
+
+
 
 @app.route("/addevents")
 def addevents():

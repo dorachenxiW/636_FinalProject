@@ -9,28 +9,38 @@
 
 <form action="/member/add" method="Post">
     
-   New Member: <input type="text" name="FirstName" placeholder="First Name"/>
-               <input type="text" name="LastName" placeholder="Last Name"/>
-               <input type="text" name="MemberID" placeholder="Member ID(****)"/>
-               <input type="text" name="TeamID" placeholder="Team ID(***)"/>
-               <input type="text" name="City" placeholder="City"/>
-               <input type="text" name="Birthdate" placeholder="Birthday(yyyy-mm-dd)"/>
+   New Member:  <input type="text" name="MemberID" placeholder="Member ID(****)"/>
+                <select name="TeamID" id="teamid" name="TeamID">
+                    <option value="101">Snowboard (101)</option>
+                    <option value="102">Alpine Skiing (102)</option>
+                    <option value="103">Freestyle Skiing (103)</option>
+                    <option value="123">Biathlon (123)</option>
+                    <option value="125">Speed Skating (125)</option>
+                </select>    
+                <input type="text" name="FirstName" placeholder="First Name"/>
+                <input type="text" name="LastName" placeholder="Last Name"/>
+                <input type="text" name="City" placeholder="City"/>
+                <input type="text" name="Birthdate" placeholder="Birthday(yyyy-mm-dd)"/>
     <button type ="submit">Add</button>
 </form>
 
-<h3>Edit a Exsiting Member</h3>
+<h3>Edit an Exsiting Member</h3>
 
 <p>Please choose a member from the list to edit</p>
 
-<form action="/member/edit" method="POST">
-    <input type="hidden", value={{memberid}}, name="MemberID"/>
-    <select name="member">
-        {% for member in memberlist %}
-            <option value="{{member[2]}}"> {{member[0]+" "+member[1]}}</option>
+<table class="table table-striped table-hover">
+    <th>Edit</th><th>Member ID</th><th>Team ID</th><th>First Name</th><th>Last Name</th><th>City</th><th>Birthday</th></tr>
+    {% for member in memberlist %}
+        <tr>
+            <td><a href="/member/edit/{{member[0]}}">Edit</a>
+            
+            </td>
+        {% for entry in member %}
+            <td>{{entry}}</td>
         {% endfor %}    
-    </select>    
-    <input type="submit"/>
-</form>
+        </tr>
+    {% endfor %}
+</table>
 
 
 
