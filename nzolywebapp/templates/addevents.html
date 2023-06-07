@@ -4,29 +4,30 @@
 <h2 align="center">Add Events and Event Stages</h2>
 
 <h3>Add a New Event</h3>
-<form action="/event/add"  method="Post">
-    New Event: <input type="text" name="EventID" placeholder="Event ID">
+<form action="/admin/event/add"  method="Post">
+    New Event:
                <input type="text" name="EventName" placeholder="Event Name">
                <select name="Sport" id="Sport">
-                {% for event in eventlist %}
-                <option value="{{event[2]}}">Sport {{event[2]}}</option>
+                {% for team in teamlist %}
+                <option value="{{team[1]}}">Sport--{{team[1]}}(Team ID--{{team[0]}})</option>
                 {% endfor %}
                </select>
-               <select name="TeamID" id="TeamID">
-                {% for event in eventlist %}
-                <option value="{{event[3]}}">Team ID {{event[3]}}</option>
+               <select name="NZTeam" id="NZTeam">
+                {% for team in teamlist %}
+                <option value="{{team[0]}}">Team ID--{{team[0]}}</option>
                 {% endfor %}
                </select>
                <button type ="submit">Add</button>
 </form>
 
-<h3>A list of all NZ Olympic Events</h3>
+<h3>Add a New Event Stage to an Exsiting Event</h3>
+<p>Please choose from the list of all NZ Olympic Events</p>
 
 <table class="table table-striped table-hover">
     <tr><th>Add a New Event Stages</th><th>Event ID</th><th>Event Name</th><th>Sport</th><th>NZ Team ID</th></tr>
     {% for event in eventlist %}
         <tr>
-            <td><a href="/eventstage/add/{{event[0]}}">Add</a>
+            <td><a href="/admin/eventstage/add/{{event[0]}}">Add</a>
                 </td>
             {% for entry in event %}
                 <td>{{entry}}</td>

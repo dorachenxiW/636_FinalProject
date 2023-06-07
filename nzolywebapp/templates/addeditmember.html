@@ -7,12 +7,12 @@
 
 <p>Please fill the form then press the add button</p>
 
-<form action="/member/add" method="Post">
+<form action="/admin/member/add" method="Post">
     
    New Member:  <input type="text" name="MemberID" placeholder="Member ID(****)"/>
                 <select name="TeamID" id="teamid" name="TeamID">
-                    {% for member in memberlist%}
-                    <option value="{{member[1]}}">TeamID {{member[1]}}</option>
+                    {% for team in teamlist%}
+                    <option value="{{team[0]}}">Team ID--{{team[1]}}({{team[0]}})</option>
                     {% endfor%}
                 </select>    
                 <input type="text" name="FirstName" placeholder="First Name"/>
@@ -30,7 +30,7 @@
     <th>Edit</th><th>Member ID</th><th>Team ID</th><th>First Name</th><th>Last Name</th><th>City</th><th>Birthday</th>
     {% for member in memberlist %}
         <tr>
-            <td><a href="/member/edit/{{member[0]}}">Edit</a>
+            <td><a href="/admin/member/edit/{{member[0]}}">Edit</a>
             
             </td>
         {% for entry in member %}
