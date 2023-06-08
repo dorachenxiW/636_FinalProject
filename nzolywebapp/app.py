@@ -46,8 +46,6 @@ def listmembers():
 @app.route("/listmembers/athlete/detail", methods=['GET', 'POST'])
 def athlete_detail():
     memberid = request.form.get('id')
-    #memberid = int(memberID)
-    #print(memberid)
     connection = getCursor()
     sql="""SELECT members.FirstName, members.LastName, members.MemberID, events.EventName, event_stage.StageDate, event_stage.StageName, event_stage.Location, event_stage.Qualifying, event_stage_results.Position
             FROM events JOIN event_stage on events.EventID=event_stage.EventID 
@@ -55,8 +53,13 @@ def athlete_detail():
             JOIN members on event_stage_results.MemberID=members.MemberID WHERE members.MemberID=%s;"""
     connection.execute(sql, (memberid,))
     Details = connection.fetchall()
-    #print(Details)
-    return render_template("athlete.html", details=Details)
+    sql_name="SELECT FirstName, LastName FROM members WHERE MemberID=%s;"
+    connection.execute(sql_name, (memberid,))
+    Names=connection.fetchone()
+    if len(Details) == 0:
+        return render_template ("athlete_nocurrentinfo.html", memberid=memberid, names=Names)
+    else:
+        return render_template("athlete.html", details=Details)
 
 @app.route("/listevents")
 def listevents():
@@ -104,7 +107,7 @@ def addeditmember():
 
 @app.route("/admin/member/add", methods=["POST"])
 def addmembers():
-    memberid=request.form.get('MemberID')
+    #memberid=request.form.get('MemberID')
     teamid=request.form.get('TeamID')
     firstname=request.form.get('FirstName')
     lastname=request.form.get('LastName')
@@ -112,7 +115,7 @@ def addmembers():
     birthdate=request.form.get('Birthdate')
 
     connection = getCursor()
-    connection.execute("INSERT INTO members (MemberID, TeamID, FirstName, LastName, City, Birthdate) VALUES (%s, %s, %s, %s, %s, %s);", (memberid, teamid, firstname, lastname, city, str(birthdate),))
+    connection.execute("INSERT INTO members (TeamID, FirstName, LastName, City, Birthdate) VALUES (%s, %s, %s, %s, %s);", (teamid, firstname, lastname, city, birthdate, ))
     
     return redirect ("/admin/addeditmember")
 
@@ -138,7 +141,7 @@ def updatemember():
     birthdate=request.form.get('Birthdate')
 
     connection = getCursor()
-    connection.execute("UPDATE members SET MemberID=%s, TeamID=%s, FirstName=%s, LastName=%s, City=%s, Birthdate=%s WHERE MemberID=%s;", (memberid, teamid, firstname, lastname, city, str(birthdate), memberid, ))
+    connection.execute("UPDATE members SET TeamID=%s, FirstName=%s, LastName=%s, City=%s, Birthdate=%s WHERE MemberID=%s;", (teamid, firstname, lastname, city, birthdate, memberid,))
 
     return redirect ("/admin/addeditmember")
 
@@ -155,7 +158,6 @@ def addeventsandstages():
 
 @app.route("/admin/event/add", methods=["POST"])
 def addevent():
-    
     eventname=request.form.get('EventName')
     sport=request.form.get('Sport')
     nzteamid=request.form.get('NZTeam')
@@ -171,21 +173,67 @@ def currentstages(eventid):
     sql = "SELECT * FROM events INNER JOIN event_stage on event_stage.EventID=events.EventID WHERE events.EventID=%s;"
     connection.execute(sql, (eventid,))
     stageList=connection.fetchall()
-    return render_template ("addeventstage.html", stagelist=stageList)
+    sql_eventname="SELECT EventName FROM events WHERE EventID=%s;"
+    connection.execute(sql_eventname, (eventid,))
+    EventName=connection.fetchone()
+    if len(stageList) == 0:
+        return render_template ("addeventstage_nocurrentstage.html", eventname=EventName, eventid=eventid)
+    else:
+        return render_template ("addeventstage.html", stagelist=stageList)
 
-@app.route("/admin/eventstage/add", methods=["POST"])
+@app.route("/admin/eventstage/add", methods=["GET", "POST"])
 def addeventstage():
-    stageid=request.form.get('StageID')
     stagename=request.form.get('StageName')
+    eventid=request.form.get('EventID')
     location=request.form.get('Location')
     stagedate=request.form.get('StageDate')
+    qualifying=request.form.get('Qualifying')
+    pointstoqualify=request.form.get('PointsToQualify')
     connection=getCursor()
-    connection.execute("INSERT INTO event_stage (StageID, StageName, Location, StageDate) VALUES (%s, %s, %s, %s);", (stageid, stagename, location, stagedate,),)
-    return render_template("addeventstage.html")
+    connection.execute("INSERT INTO event_stage (StageName, EventID, Location, StageDate, Qualifying, PointsToQualify) VALUES (%s, %s, %s, %s, %s, %s);", (stagename, eventid, location, stagedate, qualifying, pointstoqualify),)
+    
+    connection=getCursor()
+    sql = "SELECT * FROM events INNER JOIN event_stage on event_stage.EventID=events.EventID WHERE events.EventID=%s;"
+    connection.execute(sql, (eventid,))
+    stageList=connection.fetchall()
+    return render_template("addeventstage.html",stagelist=stageList)
 
-@app.route("/admin/addscores")
+@app.route("/admin/addscores", methods=["GET", "POST"])
 def addscores():
-    return render_template("addscores.html")
+    connection=getCursor()
+    sql_event="SELECT * FROM events;"
+    connection.execute(sql_event)
+    eventList=connection.fetchall()
+    #print(eventList)
+    return render_template("addscores_event.html", eventlist=eventList)
+
+@app.route("/admin/addscores/event",methods=["GET","POST"] )
+def chooseevent():
+    eventID=request.form.get('EventID')
+    connection=getCursor()
+    sql_stage="SELECT * FROM event_stage WHERE EventID=%s;"
+    connection.execute(sql_stage,(eventID,))
+    stageList=connection.fetchall()
+    return render_template ("addscore_eventstage.html", stagelist=stageList)
+
+@app.route("/admin/addscores/stageid", methods=["POST"])
+def choosestage():
+    stageID=request.form.get('StageID')
+    connection=getCursor()
+    sql="SELECT MemberID FROM members;"
+    connection.execute(sql)
+    memberID=connection.fetchall()
+    return render_template("addscoreresults.html", stageid=stageID, memberid=memberID)
+
+@app.route("/admin/addscores/update", methods=["POST"])
+def score():
+    stageID=request.form.get('StageID')
+    memberID=request.form.get('MemberID')
+    PointsScored=request.form.get('PointsScored')
+    connection=getCursor()
+    connection.execute("INSERT INTO event_stage_results (StageID, MemberID, PointsScored) VALUES (%s, %s, %s);",(stageID, memberID, PointsScored))
+    return redirect("/admin/addscores")
+
 
 @app.route("/admin/reports")
 def reports():

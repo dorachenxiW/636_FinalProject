@@ -17,7 +17,7 @@
     <label for="MemberID">Member ID(read_only)</label>
     <input type="text" value="{{memberediting[0]}}" name="MemberID" readonly/>
     <label for="TeamID">Team ID</label>
-    <select name="TeamID" id="teamid" name="TeamID">
+    <select name="TeamID" id="teamid">
         {% for team in teamlist%}
         <option value="{{team[0]}}">{{team[1]}}({{team[0]}})</option>
         {% endfor %}

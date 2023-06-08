@@ -3,12 +3,12 @@
 
 <h2 align="center">Add Events and Event Stages</h2>
 
-<h3>Adding a New Event Stage on {{stagelist[0][1]}} (Event ID -- {{stagelist[0][0]}})</h3>
+<h3>Adding a New Event Stage for Event {{eventname[0]}}</h3>
 <form action="/admin/eventstage/add" method="Post">
     
     New Event Stage:  
     <input type="text" name="StageName" placeholder="Stage Name" required/>
-    <input type="text" name="EventID" value="{{stagelist[0][0]}}" readonly/>
+    <input type="text" name="EventID" value="{{eventid}}" readonly/>
     <input type="text" name="Location" placeholder="Location" required/>
     <input type="date" name="StageDate" placeholder="Stage Date(yyyy-mm-dd)" required/>
     <select name="Qualifying" id="Qualifying">
@@ -19,12 +19,5 @@
      <button type ="submit">Add</button>
  </form>
 
- <h3>Current Stages for {{stagelist[0][1]}} (Event ID -- {{stagelist[0][0]}})</h3>
- <table class="table table-striped table-hover">
-     <tr><th>Stage ID</th><th>Stage Name</th><th>Location</th><th>Stage Date</th><th>Qualifying</th><th>Points To Qualifying</th></tr>
-     {% for stage in stagelist %}
-     <tr><td>{{stage[4]}}</td><td>{{stage[5]}}</td><td>{{stage[7]}}</td><td>{{stage[8]}}</td><td>{{stage[9]}}</td><td>{{stage[10]}}</td>
-     </tr>
-     {% endfor %}
- </table>
+ 
 {% endblock %}

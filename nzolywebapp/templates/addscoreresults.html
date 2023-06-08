@@ -1,0 +1,21 @@
+{% extends "adminbase.html" %}
+{% block content %}
+
+<h2 align="center">Add Scores or Positions</h2>
+
+<form action="/admin/addscores/update" method="Post">
+    
+    Add a new score:  
+        <label for="StageID">Stage ID (Read Only)</label>
+        <input type="text" name="StageID" value="{{stageid}}"/>
+        <label for="MemberID">Member ID</label>
+        <select name="MemberID" id="MemberID">
+            {% for member in memberid%}
+            <option value="{{member[0]}}">{{member[0]}}</option>
+            {% endfor%}
+        </select>    
+        <label for="PointsScored">Points Scored</label>
+        <input type="text" name="PointsScored"/>
+     <button type ="submit">Add</button>
+ </form>
+{% endblock %}

@@ -9,8 +9,8 @@
 
 <form action="/admin/member/add" method="Post">
     
-   New Member:  <input type="text" name="MemberID" placeholder="Member ID(****)"/>
-                <select name="TeamID" id="teamid" name="TeamID">
+   New Member:  
+                <select name="TeamID" id="teamid">
                     {% for team in teamlist%}
                     <option value="{{team[0]}}">Team ID--{{team[1]}}({{team[0]}})</option>
                     {% endfor%}
@@ -18,7 +18,7 @@
                 <input type="text" name="FirstName" placeholder="First Name"/>
                 <input type="text" name="LastName" placeholder="Last Name"/>
                 <input type="text" name="City" placeholder="City"/>
-                <input type="text" name="Birthdate" placeholder="Birthday(yyyy-mm-dd)"/>
+                <input type="date" name="Birthdate" placeholder="Birthday"/>
     <button type ="submit">Add</button>
 </form>
 

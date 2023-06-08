@@ -5,19 +5,19 @@
 
 <h3>Add a New Event</h3>
 <form action="/admin/event/add"  method="Post">
-    New Event:
-               <input type="text" name="EventName" placeholder="Event Name">
-               <select name="Sport" id="Sport">
-                {% for team in teamlist %}
-                <option value="{{team[1]}}">Sport--{{team[1]}}(Team ID--{{team[0]}})</option>
-                {% endfor %}
-               </select>
-               <select name="NZTeam" id="NZTeam">
-                {% for team in teamlist %}
-                <option value="{{team[0]}}">Team ID--{{team[0]}}</option>
-                {% endfor %}
-               </select>
-               <button type ="submit">Add</button>
+    New Event:          
+                <input type="text" name="EventName" placeholder="Event Name" required>
+                <select name="Sport" id="Sport">
+                 {% for team in teamlist %}
+                 <option value="{{team[1]}}">Sport--{{team[1]}}(Team ID--{{team[0]}})</option>
+                 {% endfor %}
+                </select>
+                <select name="NZTeam" id="NZTeam">
+                 {% for team in teamlist %}
+                 <option value="{{team[0]}}">Team ID--{{team[0]}}</option>
+                 {% endfor %}
+                </select>
+                <button type ="submit">Add</button>
 </form>
 
 <h3>Add a New Event Stage to an Exsiting Event</h3>
