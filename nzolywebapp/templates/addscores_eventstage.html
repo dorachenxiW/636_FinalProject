@@ -13,12 +13,5 @@ Please choose an event stage that you would like to add a score to:
         <button type="submit">Submit</button>
     </form>
 
-<table class="table table-striped table-hover">
-    <tr><th>Stage ID</th><th>Stage Name</th><th>Location</th><th>Stage Date</th><th>Qualifying</th><th>Points to Qualify</th></tr>
-    {% for stage in stagelist %}
-        <tr>
-            <td>{{stage[0]}}</td><td>{{stage[1]}}</td><td>{{stage[3]}}</td><td>{{stage[4]}}</td><td>{{stage[5]}}</td><td>{{stage[6]}}</td>
-        </tr>
-    {% endfor %}
 </table>
 {% endblock %}

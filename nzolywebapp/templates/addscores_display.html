@@ -1,0 +1,19 @@
+{% extends "adminbase.html" %}
+{% block content %}
+
+<h2 align="center">Add Scores or Positions</h2>
+
+The following score/position has been added in the event stage:
+<table class="table table-striped table-hover">
+    <tr><th>Result ID</th><th>Stage ID</th><th>Member ID</th><th>Points Scored</th><th>Position</th></tr>
+    
+        {% for result in results %}
+        <tr>
+            {% for entry in result%}
+             <th>{{entry}}</th>
+             {% endfor %}
+        </tr>     
+        {% endfor %}
+    
+</table>
+{% endblock %}

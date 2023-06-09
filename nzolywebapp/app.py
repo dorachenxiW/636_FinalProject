@@ -214,7 +214,10 @@ def chooseevent():
     sql_stage="SELECT * FROM event_stage WHERE EventID=%s;"
     connection.execute(sql_stage,(eventID,))
     stageList=connection.fetchall()
-    return render_template ("addscore_eventstage.html", stagelist=stageList)
+    if len(stageList) == 0:
+        return render_template ("addscores_noeventstage.html")
+    else:
+        return render_template ("addscores_eventstage.html", stagelist=stageList)
 
 @app.route("/admin/addscores/stageid", methods=["POST"])
 def choosestage():
@@ -232,7 +235,10 @@ def score():
     PointsScored=request.form.get('PointsScored')
     connection=getCursor()
     connection.execute("INSERT INTO event_stage_results (StageID, MemberID, PointsScored) VALUES (%s, %s, %s);",(stageID, memberID, PointsScored))
-    return redirect("/admin/addscores")
+    sql="SELECT * FROM event_stage_results WHERE StageID=%s;"
+    connection.execute(sql,(stageID,))
+    Results=connection.fetchall()
+    return render_template ("addscores_display.html", results=Results)
 
 
 @app.route("/admin/reports")

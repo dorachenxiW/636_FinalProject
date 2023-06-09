@@ -14,15 +14,5 @@ Please choose the event that you would like to add a score to:
         </select>   
         <button type="submit">Submit</button>
     </form>
-<table class="table table-striped table-hover">
-    <tr><th>Event ID</th><th>Event Name</th><th>Sport</th><th>NZ Team ID</th></tr>
-    {% for event in eventlist %}
-        <tr>
-            {% for entry in event %}
-                <td>{{entry}}</td>
-            {% endfor %}
-        </tr>
-    {% endfor %}
-</table>
 
 {% endblock %}
