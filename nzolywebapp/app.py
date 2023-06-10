@@ -34,10 +34,10 @@ def admin():
 @app.route("/listmembers")
 def listmembers():
     connection = getCursor()
-    sql = "SELECT members.FirstName, members.LastName, members.MemberID, teams.TeamName, members.City, members.Birthdate\
-          FROM members\
-          INNER JOIN teams\
-          ON members.TeamID = teams.TeamID;"
+    sql = """SELECT members.FirstName, members.LastName, members.MemberID, teams.TeamName, members.City, members.Birthdate
+          FROM members
+          INNER JOIN teams
+          ON members.TeamID = teams.TeamID;"""
     connection.execute(sql)
     memberList = connection.fetchall()
     #print(memberList)
@@ -47,10 +47,11 @@ def listmembers():
 def athlete_detail():
     memberid = request.form.get('id')
     connection = getCursor()
-    sql="""SELECT members.FirstName, members.LastName, members.MemberID, events.EventName, event_stage.StageDate, event_stage.StageName, event_stage.Location, event_stage.Qualifying, event_stage_results.Position
-            FROM events JOIN event_stage on events.EventID=event_stage.EventID 
-            JOIN event_stage_results on event_stage.StageID=event_stage_results.StageID
-            JOIN members on event_stage_results.MemberID=members.MemberID WHERE members.MemberID=%s;"""
+    sql="""SELECT members.FirstName, members.LastName, members.MemberID, events.EventName, event_stage.StageDate, event_stage.StageName, 
+           event_stage.Location, event_stage.Qualifying, event_stage_results.Position, event_stage_results.PointsScored
+           FROM events JOIN event_stage on events.EventID=event_stage.EventID 
+           JOIN event_stage_results on event_stage.StageID=event_stage_results.StageID
+           JOIN members on event_stage_results.MemberID=members.MemberID WHERE members.MemberID=%s;"""
     connection.execute(sql, (memberid,))
     Details = connection.fetchall()
     sql_name="SELECT FirstName, LastName FROM members WHERE MemberID=%s;"
@@ -241,7 +242,39 @@ def score():
     return render_template ("addscores_display.html", results=Results)
 
 
-@app.route("/admin/reports")
+@app.route("/admin/reports", methods=["GET","POST"])
 def reports():
+
     return render_template("reports.html")
+
+@app.route("/admin/report/type", methods=["POST"])
+def reporttype():
+    Type=request.form.get('type')
+    connection=getCursor()
+    sql_member="SELECT * FROM members JOIN teams ON teams.TeamID=members.TeamID ORDER BY members.LastName, members.FirstName;;"
+    connection.execute(sql_member)
+    memberList=connection.fetchall()
+    sql_team="SELECT * FROM teams;"
+    connection.execute(sql_team)
+    teamList=connection.fetchall()
+    sql_medal="""SELECT members.MemberID, members.FirstName, members.LastName, event_stage_results.Position 
+              FROM event_stage_results JOIN members ON members.MemberID=event_stage_results.memberID;"""
+    connection.execute(sql_medal)
+    medalList=connection.fetchall()
+    gold=0
+    sliver=0
+    bronze=0
+    for numberoftimes in range(0, len(medalList), 1):
+            if medalList[numberoftimes][3]==1:
+                gold=gold+1
+            elif medalList[numberoftimes][3]==2:
+                sliver=sliver+1
+            elif medalList[numberoftimes][3]==3:
+                bronze=bronze+1        
+
+    if Type == "medal":
+        return render_template("reports_medal.html", medallist=medalList, gold=gold, sliver=sliver, bronze=bronze)
+    elif Type == "member":
+        return render_template("reports_member.html", teamlist=teamList, memberlist=memberList)
+
 

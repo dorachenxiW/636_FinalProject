@@ -11,13 +11,10 @@
       <h1 align="center">NZ Winter Olympics</h1>
       <nav  class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="collapse navbar-collapse" id="navbarSupportedContent"> 
-        <ul class="navbar-nav mr-auto">
+        <ul align="center" class="navbar-nav mr-auto">
             <li class="nav-item active"><a class="nav-link" href="{{ url_for('listevents') }}">List Events</a></li>
             <li class="nav-item active"><a class="nav-link" href="{{ url_for('listmembers') }}">List Team Members</a></li>
-        </ul>
-          <a href="{{ url_for('admin') }}">
-          <button class="btn btn-outline-success my-2 my-sm-0" type="button">Admin</button>
-          </a>   
+        </ul>  
         </div>       
       </nav>
       <div class="container-fluid">

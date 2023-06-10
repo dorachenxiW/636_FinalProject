@@ -2,7 +2,16 @@
 {% block content %}
 <!-- code in here to search->
 <!-- db is the variable passed in searching -->
-<h2>reports</h2>
+<h1 align="center">Reports</h1>
+<h3 align="center">Please choose which report to show:</h3>
+<form action="/admin/report/type" method="POST" align="center">
+    <select name="type" id="type">
+        <option value="medal">Medal Report</option>
+        <option value="member">Team Members Report</option>
+    </select>    
+    <button type="submit">Submit</button>
+</form>
+
 
 
 {% endblock %}
