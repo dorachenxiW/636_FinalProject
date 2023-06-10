@@ -162,7 +162,6 @@ def addevent():
     eventname=request.form.get('EventName')
     sport=request.form.get('Sport')
     nzteamid=request.form.get('NZTeam')
-
     connection=getCursor()
     connection.execute("INSERT INTO events (EventName, Sport, NZTeam) VALUES (%s, %s, %s);", (eventname, sport, nzteamid,))
 
@@ -224,18 +223,23 @@ def chooseevent():
 def choosestage():
     stageID=request.form.get('StageID')
     connection=getCursor()
-    sql="SELECT MemberID FROM members;"
-    connection.execute(sql)
+    sql_member="SELECT MemberID FROM members;"
+    connection.execute(sql_member)
     memberID=connection.fetchall()
-    return render_template("addscoreresults.html", stageid=stageID, memberid=memberID)
+    sql_stage="SELECT StageName FROM event_stage WHERE StageID=%s;"
+    connection.execute(sql_stage, (stageID, ))
+    stageName=connection.fetchone()
+    #print(stageName)
+    return render_template("addscores_update.html", stageid=stageID, memberid=memberID, stagename=stageName)
 
 @app.route("/admin/addscores/update", methods=["POST"])
 def score():
     stageID=request.form.get('StageID')
     memberID=request.form.get('MemberID')
     PointsScored=request.form.get('PointsScored')
+    Position=request.form.get('Position')
     connection=getCursor()
-    connection.execute("INSERT INTO event_stage_results (StageID, MemberID, PointsScored) VALUES (%s, %s, %s);",(stageID, memberID, PointsScored))
+    connection.execute("INSERT INTO event_stage_results (StageID, MemberID, PointsScored, Position) VALUES (%s, %s, %s, %s);",(stageID, memberID, PointsScored, Position),)
     sql="SELECT * FROM event_stage_results WHERE StageID=%s;"
     connection.execute(sql,(stageID,))
     Results=connection.fetchall()

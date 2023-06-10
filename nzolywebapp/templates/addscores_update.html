@@ -13,9 +13,18 @@
             {% for member in memberid%}
             <option value="{{member[0]}}">{{member[0]}}</option>
             {% endfor%}
-        </select>    
-        <label for="PointsScored">Points Scored</label>
-        <input type="number" step="0.01" name="PointsScored"/>
+        </select>  
+        <lable for="PointsScored">Points Scored</lable>
+        <input type="number" step="0.01" name="PointsScored"/>  
+        {% if stagename[0] == 'Final' %}
+        <Label for="Postion">Position</Label>
+        <select name="Position" id="Position">
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+        </select>
+        {% else %} 
+        {% endif %}
      <button type ="submit">Add</button>
  </form>
 

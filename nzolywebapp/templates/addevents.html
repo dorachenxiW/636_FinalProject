@@ -7,11 +7,7 @@
 <form action="/admin/event/add"  method="Post">
     New Event:          
                 <input type="text" name="EventName" placeholder="Event Name" required>
-                <select name="Sport" id="Sport">
-                 {% for team in teamlist %}
-                 <option value="{{team[1]}}">Sport--{{team[1]}}(Team ID--{{team[0]}})</option>
-                 {% endfor %}
-                </select>
+                <input type="text" name="Sport" placeholder="Sport" required>
                 <select name="NZTeam" id="NZTeam">
                  {% for team in teamlist %}
                  <option value="{{team[0]}}">Team ID--{{team[0]}}</option>

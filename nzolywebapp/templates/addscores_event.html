@@ -9,7 +9,7 @@ Please choose the event that you would like to add a score to:
     <!--eventid and eventname in dropdown list to choose-->
         <select name="EventID" id="eventid">
             {% for event in eventlist %}
-            <option value="{{event[0]}}">{{event[1]}}</option>
+            <option value="{{event[0]}}">{{event[1]}} ({{event[2]}})</option>
             {% endfor %}
         </select>   
         <button type="submit">Submit</button>
