@@ -6,6 +6,15 @@ As per requirement, this project has two interfaces. The public interface is acc
 
 For public access, this interface has two major functions, the List Event function and the List Team Member function. The List Event function uses route /listevents, and gets data about the events from the "events" table in the database, passes it into the template eventlist.html and the templates display it as a table of list. The List Team Member function has the same mechanism in displaying a table of members: the route /listmembers gets data from the database and passes into the template memberlist.html, but in addition, the memberlist.html template is set to have another route /listmembers/athlete/detail, by clicking the member's name, in order to bring up a specific member's events or results details into another HTML page. A hidden form is used to pass the member ID into the route /listmembers/athlete/details, using POST methods, in order to pick up the right member. Depending on if the picked member has the required data in the database, this route returns to either the template athlete.html or athlete_nocurrentinfo.html. Below sees the graph showing different routes and templates.
 
+```mermaid
+graph TD;
+    A[LIST EVENT FUNCTION]-->B[Route /listevents];
+    B[Route /listevent]-->|GET|C(eventlist.html);
+    D[LIST TEAM MEMBER FUNCTION]-->E[Route /listmembers];
+    E[Route /listmembers]-->|GET|F(memberlist.html)-->|POST|G[Route /listmembers/athlete/detail];
+    G[Route /listmembers/athlete/detail]-->|GET|H(athlete.html)
+    G[Route /listmembers/athlete/detail]-->|GET|I(athlete_nocurrentinfo.html)
+```
 ## Assumptions
 - The listmembers function from the public interface, the list showing has changed its order. Instead of showing memberID and TeamID, "Name" is created to combine FirstName and LastName from the db so the clickable link doesnt have a confusion. Also because of the link, the names have been moved to the first colunm.  
 - Add/Edit function has a assumption that the memberid is readyonly and not chaangeable when editting. Also, a drop down has created to choose a team as I assume there is only new team added at the same time as adding a member. 
