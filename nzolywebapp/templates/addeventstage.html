@@ -5,7 +5,6 @@
 
 <h3>Adding a New Event Stage on {{stagelist[0][1]}} (Event ID -- {{stagelist[0][0]}})</h3>
 <form action="/admin/eventstage/add" method="Post">
-    
     New Event Stage:  
     <input type="text" name="StageName" placeholder="Stage Name" required/>
     <input type="number" name="EventID" value="{{stagelist[0][0]}}" readonly/>
