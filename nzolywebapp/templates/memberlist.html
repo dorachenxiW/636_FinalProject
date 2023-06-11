@@ -5,14 +5,14 @@
 <h3 align="center">A list of all NZ Olympic Team members</h3>
 
 <table class="table table-striped table-hover">
-    <tr><th>Name</th><th>Member ID</th><th>Team Name</th><th>City</th><th>Birthday</th></tr>
+    <tr><th>Name</th><th>Team Name</th><th>City</th><th>Birthday</th></tr>
     {% for member in memberlist %}
     {% set name = member[0]|string + " " + member[1]|string %}
         <tr>
             <td><Form action="/listmembers/athlete/detail" method="POST">
             <input type="hidden" name="id" id="id" value="{{member[2]|int}}">
             <button type="submit" class="btn btn-link" >{{name}}</Form></td>
-            <td>{{member[2]}}</td><td>{{member[3]}}</td><td>{{member[4]}}</td><td>{{member[5]}}</td>
+            <td>{{member[3]}}</td><td>{{member[4]}}</td><td>{{member[5]}}</td>
         </tr>
     {% endfor %}
 </table>
